@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TodoList } from "./components/TodoList";
-import { dummyTodoList } from "./data/dummyTodoList";
 import { Todo } from "./types/todo";
 import { AddTodoFrom } from "./components/AddTodoFrom";
 import { TodoSummary } from "./components/TodoSummary";
 
 function App() {
-  const [todoList, setTodoList] = useState<Todo[]>(dummyTodoList);
+  const [todoList, setTodoList] = useState<Todo[]>(() => {
+    const localStorageTodoList = localStorage.getItem("todoList");
+
+    return JSON.parse(localStorageTodoList ?? "[]");
+  });
+
+  useEffect(() => {
+    localStorage.setItem("todoList", JSON.stringify(todoList));
+  }, [todoList]);
 
   const changeCompleted = (id: number) => {
     setTodoList((prevTodoList) => {
