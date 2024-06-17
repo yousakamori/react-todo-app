@@ -3,6 +3,7 @@ import { TodoList } from "./components/TodoList";
 import { dummyTodoList } from "./data/dummyTodoList";
 import { Todo } from "./types/todo";
 import { AddTodoFrom } from "./components/AddTodoFrom";
+import { TodoSummary } from "./components/TodoSummary";
 
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>(dummyTodoList);
@@ -36,17 +37,24 @@ function App() {
     });
   };
 
+  const deleteAllCompleted = () => {
+    setTodoList((prevTodoList) => {
+      return prevTodoList.filter((todo) => !todo.completed);
+    });
+  };
+
   return (
     <main className="max-w-xl mx-auto mt-10">
       <h1 className="text-4xl text-center">Todoアプリ</h1>
       <div className="space-y-5">
         <AddTodoFrom addTodo={addTodo} />
-        <div className="p-5 rounded bg-slate-200">
+        <div className="p-5 space-y-5 rounded bg-slate-200">
           <TodoList
             todoList={todoList}
             changeCompleted={changeCompleted}
             deleteTodo={deleteTodo}
           />
+          <TodoSummary deleteAllCompleted={deleteAllCompleted} />
         </div>
       </div>
     </main>
