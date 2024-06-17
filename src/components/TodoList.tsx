@@ -8,6 +8,10 @@ type Props = {
 };
 
 export const TodoList = ({ todoList, changeCompleted, deleteTodo }: Props) => {
+  if (todoList.length === 0) {
+    return <p className="text-sm text-center">Todoがありません</p>;
+  }
+
   return (
     <div className="space-y-3">
       {todoList.map((todo) => (
