@@ -30,13 +30,23 @@ function App() {
     });
   };
 
+  const deleteTodo = (id: number) => {
+    setTodoList((prevTodoList) => {
+      return prevTodoList.filter((todo) => todo.id !== id);
+    });
+  };
+
   return (
     <main className="max-w-xl mx-auto mt-10">
       <h1 className="text-4xl text-center">Todoアプリ</h1>
       <div className="space-y-5">
         <AddTodoFrom addTodo={addTodo} />
         <div className="p-5 rounded bg-slate-200">
-          <TodoList todoList={todoList} changeCompleted={changeCompleted} />
+          <TodoList
+            todoList={todoList}
+            changeCompleted={changeCompleted}
+            deleteTodo={deleteTodo}
+          />
         </div>
       </div>
     </main>
