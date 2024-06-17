@@ -1,54 +1,11 @@
-import { useEffect, useState } from "react";
 import { TodoList } from "./components/TodoList";
-import { Todo } from "./types/todo";
 import { AddTodoFrom } from "./components/AddTodoFrom";
 import { TodoSummary } from "./components/TodoSummary";
+import { useTodoList } from "./hooks/useTodoList";
 
 function App() {
-  const [todoList, setTodoList] = useState<Todo[]>(() => {
-    const localStorageTodoList = localStorage.getItem("todoList");
-
-    return JSON.parse(localStorageTodoList ?? "[]");
-  });
-
-  useEffect(() => {
-    localStorage.setItem("todoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  const changeCompleted = (id: number) => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, completed: !todo.completed };
-        }
-        return todo;
-      });
-    });
-  };
-
-  const addTodo = (title: string) => {
-    setTodoList((prevTodoList) => {
-      const newTodo: Todo = {
-        id: Date.now(),
-        title,
-        completed: false,
-      };
-
-      return [newTodo, ...prevTodoList];
-    });
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.filter((todo) => todo.id !== id);
-    });
-  };
-
-  const deleteAllCompleted = () => {
-    setTodoList((prevTodoList) => {
-      return prevTodoList.filter((todo) => !todo.completed);
-    });
-  };
+  const { todoList, changeCompleted, addTodo, deleteTodo, deleteAllCompleted } =
+    useTodoList();
 
   return (
     <main className="max-w-xl mx-auto mt-10">
