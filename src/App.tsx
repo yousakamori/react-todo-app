@@ -2,9 +2,11 @@ import { useState } from "react";
 import { TodoList } from "./components/TodoList";
 import { dummyTodoList } from "./data/dummyTodoList";
 import { Todo } from "./types/todo";
+import { AddTodoFrom } from "./components/AddTodoFrom";
 
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>(dummyTodoList);
+
   const changeCompleted = (id: number) => {
     setTodoList((prevTodoList) => {
       return prevTodoList.map((todo) => {
@@ -16,11 +18,26 @@ function App() {
     });
   };
 
+  const addTodo = (title: string) => {
+    setTodoList((prevTodoList) => {
+      const newTodo: Todo = {
+        id: Date.now(),
+        title,
+        completed: false,
+      };
+
+      return [newTodo, ...prevTodoList];
+    });
+  };
+
   return (
     <main className="max-w-xl mx-auto mt-10">
       <h1 className="text-4xl text-center">Todoアプリ</h1>
-      <div className="p-5 rounded bg-slate-200">
-        <TodoList todoList={todoList} changeCompleted={changeCompleted} />
+      <div className="space-y-5">
+        <AddTodoFrom addTodo={addTodo} />
+        <div className="p-5 rounded bg-slate-200">
+          <TodoList todoList={todoList} changeCompleted={changeCompleted} />
+        </div>
       </div>
     </main>
   );
